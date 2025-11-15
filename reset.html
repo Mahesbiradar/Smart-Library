@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - Smart Library</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="auth-app">
+        <header class="glass-header">
+            <nav id="main-nav"></nav>
+        </header>
+
+        <main class="auth-container">
+            <div class="auth-card glass-card">
+                <div class="auth-header">
+                    <img src="assets/cbit-logo.jpg" alt="Library Logo" class="auth-logo">
+                    <h1>Reset Password</h1>
+                </div>
+
+                <form id="resetForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="resetEmail">Email</label>
+                        <input type="email" id="resetEmail" required placeholder="Enter your registered email">
+                    </div>
+                    <div class="form-group">
+                        <label for="resetUSN">USN</label>
+                        <input type="text" id="resetUSN" required placeholder="Enter your USN for verification">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required placeholder="Enter new password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" required placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn-warning btn-block">Reset Password</button>
+                </form>
+
+                <div class="auth-links">
+                    <p>Remember your password? <a href="login.html">Login here</a></p>
+                </div>
+            </div>
+        </main>
+
+        <footer id="main-footer" class="glass-footer"></footer>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.renderNav();
+            UI.renderFooter();
+            Auth.initReset();
+        });
+    </script>
+</body>
+</html>

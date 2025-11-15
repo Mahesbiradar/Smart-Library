@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Manager - Smart Library</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div id="admin-app">
+        <aside class="admin-sidebar glass-card">
+            <div class="sidebar-header">
+                <img src="../assets/cbit-logo.jpg" alt="Admin Logo">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="books.html" class="nav-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    Books Manager
+                </a>
+                <a href="transactions.html" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    Transactions
+                </a>
+                <a href="issue-return.html" class="nav-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    Issue/Return
+                </a>
+                <button onclick="Auth.logout()" class="nav-link logout-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </button>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header glass-card">
+                <h1>Books Manager</h1>
+                <div class="header-actions">
+                    <button onclick="Admin.showAddBookModal()" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Book
+                    </button>
+                    <button onclick="Admin.importCSV()" class="btn-success">
+                        Import CSV
+                    </button>
+                    <button onclick="Admin.exportCSV()" class="btn-warning">
+                        Export CSV
+                    </button>
+                </div>
+            </header>
+
+            <section class="admin-content">
+                <div class="books-filters glass-card">
+                    <input type="text" id="bookSearch" placeholder="Search books..." class="form-control">
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+
+                <div id="booksTableContainer" class="glass-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cover</th>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="title">Title</th>
+                                <th data-sort="author">Author</th>
+                                <th data-sort="isbn">ISBN</th>
+                                <th data-sort="category">Category</th>
+                                <th>Available</th>
+                                <th data-sort="quantity">Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody">
+                            <tr>
+                                <td colspan="9" class="no-data">Loading books...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer id="main-footer" class="glass-footer" style="margin-top: auto;"></footer>
+
+    <!-- Add/Edit Book Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Book</h2>
+                <button onclick="Admin.closeModal()" class="modal-close">&times;</button>
+            </div>
+            <form id="bookForm">
+                <input type="hidden" id="bookId">
+                <div class="form-group">
+                    <label for="bookTitle">Title *</label>
+                    <input type="text" id="bookTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookAuthor">Author *</label>
+                    <input type="text" id="bookAuthor" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookISBN">ISBN</label>
+                    <input type="text" id="bookISBN" placeholder="978-1234567890">
+                </div>
+                <div class="form-group">
+                    <label for="bookCategory">Category *</label>
+                    <input type="text" id="bookCategory" required placeholder="e.g., Programming, Electronics">
+                </div>
+                <div class="form-group">
+                    <label for="bookQuantity">Quantity *</label>
+                    <input type="number" id="bookQuantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookCover">Cover Image URL</label>
+                    <input type="url" id="bookCover" placeholder="https://example.com/book-cover.jpg">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="Admin.closeModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/pages.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.checkAuth('admin')) {
+                window.location.href = '../login.html';
+                return;
+            }
+            UI.renderNav();
+            UI.renderFooter();
+            Admin.books.init();
+        });
+    </script>
+</body>
+</html>

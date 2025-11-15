@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Library - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="glass-header">
+            <nav id="main-nav"></nav>
+        </header>
+        
+        <main class="container">
+            <nav id="breadcrumb-nav" aria-label="Breadcrumb navigation"></nav>
+
+            <section class="search-section glass-card">
+                <h2>Find Your Book</h2>
+                <div class="search-box">
+                    <input type="text" id="searchBar" placeholder="Search by title, author, or ISBN...">
+                    <button id="searchBtn" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <section class="departments">
+                <h2>Browse by Department</h2>
+                <div class="department-grid">
+                    <a href="books.html?dept=CSE" class="dept-card glass-card">
+                        <img src="assets/dept-cse.JPG" alt="CSE" loading="lazy">
+                        <h3>Computer Science</h3>
+                        <p>Programming, Algorithms, Data Structures</p>
+                    </a>
+                    <a href="books.html?dept=ECE" class="dept-card glass-card">
+                        <img src="assets/dept-ece.JPG" alt="ECE" loading="lazy">
+                        <h3>Electronics & Comm.</h3>
+                        <p>Circuits, Signals, Networks</p>
+                    </a>
+                    <a href="books.html?dept=ETE" class="dept-card glass-card">
+                        <img src="assets/dept-ete.JPG" alt="ETE" loading="lazy">
+                        <h3>Electronics & Telecom</h3>
+                        <p>Communication, Protocols, RF</p>
+                    </a>
+                    <a href="books.html?dept=EIE" class="dept-card glass-card">
+                        <img src="assets/dept-eie.JPG" alt="EIE" loading="lazy">
+                        <h3>Electronics & Instrumentation</h3>
+                        <p>Controls, Sensors, Measurements</p>
+                    </a>
+                    <a href="books.html?dept=ME" class="dept-card glass-card">
+                        <img src="assets/dept-me.JPG" alt="ME" loading="lazy">
+                        <h3>Mechanical Engineering</h3>
+                        <p>Design, Thermodynamics, Manufacturing</p>
+                    </a>
+                    <a href="books.html?dept=CE" class="dept-card glass-card">
+                        <img src="assets/dept-ce.JPG" alt="CE" loading="lazy">
+                        <h3>Civil Engineering</h3>
+                        <p>Structures, Materials, Surveying</p>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer id="main-footer" class="glass-footer"></footer>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/pages.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.renderNav();
+            UI.renderBreadcrumbs();
+            UI.renderFooter();
+            Pages.home.init();
+        });
+    </script>
+</body>
+</html>

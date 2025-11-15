@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Books - Smart Library</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="glass-header">
+            <nav id="main-nav"></nav>
+        </header>
+
+        <main class="container">
+            <nav id="breadcrumb-nav" aria-label="Breadcrumb navigation"></nav>
+
+            <section class="books-header">
+                <h1>Library Collection</h1>
+                <div class="search-box">
+                    <input type="text" id="searchBooks" placeholder="Search books by title, author, or ISBN...">
+                    <button id="searchBtn" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="filter-controls">
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="availabilityFilter" class="form-select">
+                        <option value="">All Books</option>
+                        <option value="available">Available Only</option>
+                    </select>
+                </div>
+            </section>
+
+            <section id="books-container">
+                <div id="booksGrid" class="books-grid">
+                    <!-- Books will be loaded here -->
+                </div>
+                <div id="noBooks" class="no-data" style="display: none;">
+                    <p>No books found matching your search.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer id="main-footer" class="glass-footer"></footer>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/pages.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.renderNav();
+            UI.renderBreadcrumbs();
+            UI.renderFooter();
+            Pages.books.init();
+        });
+    </script>
+</body>
+</html>

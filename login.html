@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Library</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="auth-app">
+        <header class="glass-header">
+            <nav id="main-nav"></nav>
+        </header>
+
+        <main class="auth-container">
+            <div class="auth-card glass-card">
+                <div class="auth-header">
+                    <img src="assets/cbit-logo.jpg" alt="Library Logo" class="auth-logo" loading="lazy">
+                    <h1>Smart Library</h1>
+                </div>
+
+                <form id="loginForm" class="auth-form" role="form" aria-labelledby="login-heading">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email" aria-describedby="email-help" aria-required="true">
+                        <div id="email-help" class="sr-only">Enter your registered email address</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password" aria-describedby="password-help" aria-required="true">
+                        <div id="password-help" class="sr-only">Enter your account password</div>
+                    </div>
+                    <button type="submit" class="btn-primary btn-block" aria-describedby="login-help">Login</button>
+                    <div id="login-help" class="sr-only">Click to sign in to your account</div>
+                </form>
+
+                <div class="auth-links">
+                    <p>Don't have an account? <a href="register.html">Register here</a></p>
+                    <p><a href="reset.html">Forgot Password?</a></p>
+                </div>
+            </div>
+        </main>
+
+        <footer id="main-footer" class="glass-footer"></footer>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.renderNav();
+            UI.renderFooter();
+            Auth.initLogin();
+        });
+    </script>
+</body>
+</html>
