@@ -10,8 +10,8 @@
     --warning-color: #ffc107;
     --danger-color: #dc3545;
     --dark-bg: rgba(0, 40, 80, 0.85);
-    --glass-bg: rgba(255, 255, 255, 0.15);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.18);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     --text-primary: #ffffff;
     --text-secondary: #d9e0e6;
@@ -27,8 +27,8 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #004080 0%, #0066cc 100%),
-                url('../assets/bg-library.jpg') no-repeat center center fixed;
+    background: linear-gradient(135deg, #004080 0%, #0066cc 100%), 
+                url('/assets/bg-library.jpg') no-repeat center center fixed;
     background-size: cover;
     background-blend-mode: multiply;
     color: var(--text-primary);
@@ -45,20 +45,20 @@ body {
 /* Glassmorphism Components */
 .glass-header {
     background: var(--glass-bg);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--glass-border);
-    padding: 0.5rem 2rem;
+    padding: 1rem 2rem;
     box-shadow: var(--glass-shadow);
 }
 
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 2rem;
     box-shadow: var(--glass-shadow);
     transition: var(--transition);
 }
@@ -70,11 +70,11 @@ body {
 
 .glass-footer {
     background: var(--glass-bg);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid var(--glass-border);
     margin-top: auto;
-    padding: 1.5rem 0 1rem;
+    padding: 2rem 0 1rem;
 }
 
 /* Navigation */
@@ -88,27 +88,17 @@ body {
 
 .nav-brand {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .nav-brand img {
     height: 50px;
-    border-radius: 10px;
-    object-fit: cover;
 }
 
 .nav-brand h1 {
     font-size: 1.5rem;
     font-weight: 600;
-    margin: 0;
-}
-
-.nav-brand p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin: 0;
 }
 
 .nav-links {
@@ -185,7 +175,7 @@ body {
 
 .search-box {
     display: flex;
-    width: 60%;
+    max-width: 600px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 50px;
@@ -335,8 +325,8 @@ body {
 
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
 }
 
 .book-card {
@@ -406,8 +396,6 @@ body {
 .auth-logo {
     height: 80px;
     margin-bottom: 1rem;
-    border-radius: 10px;
-    object-fit: cover;
 }
 
 .auth-form .form-group {
@@ -498,8 +486,7 @@ body {
 
 .admin-main {
     flex: 1;
-    padding: 1.5rem;
-    max-width: calc(100vw - 300px);
+    padding: 2rem;
 }
 
 .admin-header {
@@ -604,16 +591,6 @@ body {
 
 .btn-primary:hover {
     background: var(--secondary-color);
-}
-
-.btn-primary:active {
-    background: var(--primary-color);
-    transform: scale(0.98);
-}
-
-.btn-primary:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
 }
 
 .btn-success {
@@ -724,43 +701,260 @@ body {
         flex-direction: column;
         gap: 0.5rem;
     }
-
+    
     .hero h1 {
         font-size: 2rem;
     }
-
+    
     .department-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .admin-sidebar {
         width: 100%;
         height: auto;
         position: relative;
     }
-
+    
     #admin-app {
         flex-direction: column;
     }
-
+    
     .books-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
 
-/* Dashboard */
-.dashboard-horizontal {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
+/* Additional Admin Styles */
+.book-thumbnail {
+    width: 50px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
-.stats-section {
+.availability-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.availability-badge.available {
+    background: var(--success-color);
+    color: white;
+}
+
+.availability-badge.unavailable {
+    background: var(--danger-color);
+    color: white;
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.status-issued {
+    background: var(--primary-color);
+    color: white;
+}
+
+.status-badge.status-returned {
+    background: var(--success-color);
+    color: white;
+}
+
+.status-badge.status-pending {
+    background: var(--warning-color);
+    color: #333;
+}
+
+.status-badge.overdue {
+    background: var(--danger-color);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.action-buttons {
     display: flex;
-    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+/* Dashboard specific styles */
+.dashboard-header {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.user-info h2 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.user-info p {
+    margin: 0.5rem 0 0 0;
+    color: var(--text-secondary);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.stat-card p {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+/* Profile specific styles */
+.profile-header {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    margin-top: 1rem;
+}
+
+.profile-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--glass-border);
+}
+
+.profile-form,
+.password-change {
+    margin-bottom: 2rem;
+}
+
+/* Scanner section styles */
+.scanner-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.search-controls {
+    display: flex;
     gap: 1rem;
+    margin-top: 1rem;
+}
+
+.search-controls .form-control {
     flex: 1;
-    min-width: 250px;
+}
+
+.book-info {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.book-info .book-cover {
+    width: 120px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.book-info .book-details {
+    flex: 1;
+}
+
+.book-info .book-details h4 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.student-card {
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.student-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.student-card p {
+    margin: 0.25rem 0;
+    color: var(--text-secondary);
+}
+
+/* Error and loading states */
+.error-message {
+    padding: 1rem;
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+    color: #f8d7da;
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .book-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .user-info {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .search-controls {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
 }
 
 /* Utility Classes */
@@ -770,3 +964,9 @@ body {
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 .hidden { display: none !important; }
+
+/* Toast improvements */
+.toast {
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}

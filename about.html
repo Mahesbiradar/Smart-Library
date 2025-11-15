@@ -13,58 +13,93 @@
         </header>
 
         <main class="container">
-            <nav id="breadcrumb-nav" aria-label="Breadcrumb navigation"></nav>
-
             <section class="about-section">
                 <h1>About Smart Library</h1>
                 <div class="mentor-card glass-card">
-                    <img src="assets/cbit-logo.jpg" alt="Dr. Vidya Honguntikar" class="mentor-pic" loading="lazy">
-                    <h2>Dr. Vidya Honguntikar</h2>
-                    <p>Mentor & Guide</p>
-                    <p class="mentor-desc">Leading the digital transformation of our library system with innovative solutions.</p>
+                    <img src="assets/cbit-logo.jpg" alt="C. Byre Gowda Institute" class="mentor-pic">
+                    <h2>C. Byre Gowda Institute of Technology</h2>
+                    <p>Leading Technical Education</p>
+                    <p class="mentor-desc">Empowering students through innovative digital library solutions and cutting-edge technology.</p>
                 </div>
 
                 <h2>Development Team</h2>
                 <div class="team-grid">
                     <div class="team-card glass-card">
-                        <img src="assets/dept-cse.JPG" alt="Dhruva Kumar" class="team-pic" loading="lazy">
+                        <div class="team-pic" style="background: #667eea; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 2rem;">DK</div>
                         <h3>Dhruva Kumar</h3>
                         <p class="usn">USN: 1DA23ET400</p>
                         <p>Full Stack Developer</p>
                     </div>
                     <div class="team-card glass-card">
-                        <img src="assets/dept-ece.JPG" alt="Harish D" class="team-pic" loading="lazy">
+                        <div class="team-pic" style="background: #764ba2; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 2rem;">HD</div>
                         <h3>Harish D</h3>
                         <p class="usn">USN: 1DA23ET401</p>
                         <p>Frontend Developer</p>
                     </div>
                     <div class="team-card glass-card">
-                        <img src="assets/dept-eie.JPG" alt="Mahesh Biradar" class="team-pic" loading="lazy">
+                        <div class="team-pic" style="background: #f093fb; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 2rem;">MB</div>
                         <h3>Mahesh Biradar</h3>
                         <p class="usn">USN: 1DA23ET402</p>
                         <p>Backend Developer</p>
                     </div>
                     <div class="team-card glass-card">
-                        <img src="assets/dept-ete.JPG" alt="Yashswini K" class="team-pic" loading="lazy">
+                        <div class="team-pic" style="background: #4facfe; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 2rem;">YK</div>
                         <h3>Yashswini K</h3>
                         <p class="usn">USN: 1DA23ET407</p>
                         <p>UI/UX Designer</p>
                     </div>
                 </div>
+
+                <div class="glass-card" style="margin-top: 3rem; text-align: center;">
+                    <h2>Project Overview</h2>
+                    <p>Smart Library is a comprehensive digital library management system designed to streamline book issuing, returning, and inventory management processes. Our system provides an intuitive interface for students and administrators with features like barcode scanning, CSV import/export, and real-time transaction tracking.</p>
+                    <br>
+                    <p>This project demonstrates our expertise in full-stack web development, database management, and user experience design.</p>
+                </div>
             </section>
         </main>
 
-        <footer id="main-footer" class="glass-footer"></footer>
+        <footer class="glass-footer">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="books.html">Books</a></li>
+                        <li><a href="https://drait.edu.in/">College Website</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>C. Byre Gowda Institute of Technology</p>
+                    <p>Srinivasapura-Kolar Rd, Thoradevandahalli, Karnataka 563101</p>
+                    <p>Email: library@cbitkolar.edu.in</p>
+                    <p>Phone: +91-80-2345 6789</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><img src="assets/icon-facebook.png" alt="Facebook"></a>
+                        <a href="#"><img src="assets/icon-twitter.png" alt="Twitter"></a>
+                        <a href="#"><img src="assets/icon-instagram.png" alt="Instagram"></a>
+                        <a href="#"><img src="assets/icon-linkedin.png" alt="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 C. Byre Gowda Institute of Technology. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             UI.renderNav();
-            UI.renderBreadcrumbs();
-            UI.renderFooter();
+            Pages.about.init();
         });
     </script>
 </body>

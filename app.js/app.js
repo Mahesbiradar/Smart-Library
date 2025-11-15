@@ -294,20 +294,7 @@ const App = {
             padding: 1rem 2rem;
             border-radius: 8px;
             animation: slideIn 0.3s ease;
-            max-width: 400px;
         `;
-        
-        // Set colors based on type
-        if (type === 'error') {
-            toast.style.background = 'rgba(220, 53, 69, 0.9)';
-            toast.style.color = 'white';
-        } else if (type === 'success') {
-            toast.style.background = 'rgba(40, 167, 69, 0.9)';
-            toast.style.color = 'white';
-        } else {
-            toast.style.background = 'rgba(23, 162, 184, 0.9)';
-            toast.style.color = 'white';
-        }
         
         document.body.appendChild(toast);
         
@@ -341,35 +328,26 @@ const App = {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
-        this.showToast('CSV exported successfully');
     },
 
     importFromCSV(file, callback) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            try {
-                const csv = e.target.result;
-                const lines = csv.split('\n').filter(line => line.trim());
-                if (lines.length < 2) {
-                    throw new Error('CSV file must have at least a header and one data row');
-                }
-                
-                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-                const data = [];
+            const csv = e.target.result;
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const data = [];
 
-                for (let i = 1; i < lines.length; i++) {
-                    const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                    const obj = {};
-                    headers.forEach((header, index) => {
-                        obj[header] = values[index] || '';
-                    });
-                    data.push(obj);
-                }
-                callback(data);
-            } catch (error) {
-                this.showToast('Error reading CSV file: ' + error.message, 'error');
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = values[index];
+                });
+                data.push(obj);
             }
+            callback(data);
         };
         reader.readAsText(file);
     }

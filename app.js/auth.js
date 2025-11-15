@@ -36,7 +36,6 @@ const Auth = {
             timestamp: new Date().toISOString()
         };
         localStorage.setItem(App.KEYS.SESSION, JSON.stringify(session));
-        localStorage.setItem(App.KEYS.CURRENT_USER, JSON.stringify(user));
         this.currentUser = user;
     },
 
@@ -77,6 +76,7 @@ const Auth = {
 
         // Save session
         this.saveSession(user);
+        localStorage.setItem(App.KEYS.CURRENT_USER, JSON.stringify(user));
 
         App.showToast(`Welcome back, ${user.name}!`);
 
@@ -206,12 +206,6 @@ const Auth = {
         users[userIndex].password = newPassword;
         App.saveUsers(users);
 
-        // Update current session if user is logged in
-        if (this.currentUser && this.currentUser.email === email) {
-            this.currentUser.password = newPassword;
-            this.saveSession(this.currentUser);
-        }
-
         App.showToast('Password reset successful! Please login.');
         
         setTimeout(() => {
@@ -235,21 +229,11 @@ const Auth = {
         this.loadSession();
         
         if (!this.currentUser) {
-            if (window.location.pathname.includes('admin/') || 
-                window.location.pathname.includes('user/')) {
-                App.showToast('Please login to access this page', 'error');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1000);
-            }
             return false;
         }
 
         if (requiredRole && this.currentUser.role !== requiredRole) {
             App.showToast('Access denied. Insufficient permissions.', 'error');
-            setTimeout(() => {
-                window.location.href = requiredRole === 'admin' ? 'admin/dashboard.html' : 'user/dashboard.html';
-            }, 1000);
             return false;
         }
 
@@ -263,43 +247,9 @@ const Auth = {
 
     // Update current user (after profile changes)
     updateCurrentUser(userData) {
-        // Update in memory
         this.currentUser = { ...this.currentUser, ...userData };
-        
-        // Update in storage
         this.saveSession(this.currentUser);
-        
-        // Update in users array
-        const users = App.getUsers();
-        const userIndex = users.findIndex(u => u.userId === this.currentUser.userId);
-        if (userIndex !== -1) {
-            users[userIndex] = { ...users[userIndex], ...userData };
-            App.saveUsers(users);
-        }
-    },
-
-    // Change password
-    changePassword(currentPassword, newPassword, confirmPassword) {
-        if (!this.currentUser) {
-            throw new Error('User not logged in');
-        }
-
-        if (this.currentUser.password !== currentPassword) {
-            throw new Error('Current password is incorrect');
-        }
-
-        if (newPassword !== confirmPassword) {
-            throw new Error('New passwords do not match');
-        }
-
-        if (newPassword.length < 6) {
-            throw new Error('New password must be at least 6 characters long');
-        }
-
-        // Update password
-        this.updateCurrentUser({ password: newPassword });
-        
-        return true;
+        localStorage.setItem(App.KEYS.CURRENT_USER, JSON.stringify(this.currentUser));
     }
 };
 

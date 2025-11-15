@@ -13,7 +13,13 @@
         </header>
         
         <main class="container">
-            <nav id="breadcrumb-nav" aria-label="Breadcrumb navigation"></nav>
+            <section class="hero glass-card">
+                <div class="hero-content">
+                    <img src="assets/cbit-logo.jpg" alt="CBIT Logo" class="logo">
+                    <h1>Smart Library</h1>
+                    <p class="tagline">Empowering Minds, One Click at a Time</p>
+                </div>
+            </section>
 
             <section class="search-section glass-card">
                 <h2>Find Your Book</h2>
@@ -32,32 +38,32 @@
                 <h2>Browse by Department</h2>
                 <div class="department-grid">
                     <a href="books.html?dept=CSE" class="dept-card glass-card">
-                        <img src="assets/dept-cse.JPG" alt="CSE" loading="lazy">
+                        <img src="assets/dept-cse.JPG" alt="CSE">
                         <h3>Computer Science</h3>
                         <p>Programming, Algorithms, Data Structures</p>
                     </a>
                     <a href="books.html?dept=ECE" class="dept-card glass-card">
-                        <img src="assets/dept-ece.JPG" alt="ECE" loading="lazy">
+                        <img src="assets/dept-ece.JPG" alt="ECE">
                         <h3>Electronics & Comm.</h3>
                         <p>Circuits, Signals, Networks</p>
                     </a>
                     <a href="books.html?dept=ETE" class="dept-card glass-card">
-                        <img src="assets/dept-ete.JPG" alt="ETE" loading="lazy">
+                        <img src="assets/dept-ete.JPG" alt="ETE">
                         <h3>Electronics & Telecom</h3>
                         <p>Communication, Protocols, RF</p>
                     </a>
                     <a href="books.html?dept=EIE" class="dept-card glass-card">
-                        <img src="assets/dept-eie.JPG" alt="EIE" loading="lazy">
+                        <img src="assets/dept-eie.JPG" alt="EIE">
                         <h3>Electronics & Instrumentation</h3>
                         <p>Controls, Sensors, Measurements</p>
                     </a>
                     <a href="books.html?dept=ME" class="dept-card glass-card">
-                        <img src="assets/dept-me.JPG" alt="ME" loading="lazy">
+                        <img src="assets/dept-me.JPG" alt="ME">
                         <h3>Mechanical Engineering</h3>
                         <p>Design, Thermodynamics, Manufacturing</p>
                     </a>
                     <a href="books.html?dept=CE" class="dept-card glass-card">
-                        <img src="assets/dept-ce.JPG" alt="CE" loading="lazy">
+                        <img src="assets/dept-ce.JPG" alt="CE">
                         <h3>Civil Engineering</h3>
                         <p>Structures, Materials, Surveying</p>
                     </a>
@@ -65,19 +71,48 @@
             </section>
         </main>
 
-        <footer id="main-footer" class="glass-footer"></footer>
+        <footer class="glass-footer">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="books.html">Books</a></li>
+                        <li><a href="https://drait.edu.in/">College</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>C. Byre Gowda Institute of Technology<br>
+                    Srinivasapura-Kolar Rd, Thoradevandahalli, Karnataka 563101</p>
+                    <p>Email: library@cbitkolar.edu.in</p>
+                    <p>Phone: +91-80-2345 6789</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><img src="assets/icon-facebook.png" alt="FB"></a>
+                        <a href="#"><img src="assets/icon-twitter.png" alt="TW"></a>
+                        <a href="#"><img src="assets/icon-instagram.png" alt="IG"></a>
+                        <a href="#"><img src="assets/icon-linkedin.png" alt="LI"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 C. Byre Gowda Institute of Technology. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/ui.js"></script>
-    <script type="module" src="js/pages.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/pages.js"></script>
     <script>
         // Initialize page
         document.addEventListener('DOMContentLoaded', () => {
             UI.renderNav();
-            UI.renderBreadcrumbs();
-            UI.renderFooter();
             Pages.home.init();
         });
     </script>

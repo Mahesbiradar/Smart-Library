@@ -58,17 +58,17 @@
             <header class="admin-header glass-card">
                 <h1>Books Manager</h1>
                 <div class="header-actions">
-                    <button onclick="Admin.showAddBookModal()" class="btn-primary">
+                    <button onclick="Admin.books.showAddBookModal()" class="btn-primary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
                         Add Book
                     </button>
-                    <button onclick="Admin.importCSV()" class="btn-success">
+                    <button onclick="Admin.books.importCSV()" class="btn-success">
                         Import CSV
                     </button>
-                    <button onclick="Admin.exportCSV()" class="btn-warning">
+                    <button onclick="Admin.books.exportCSV()" class="btn-warning">
                         Export CSV
                     </button>
                 </div>
@@ -87,13 +87,13 @@
                         <thead>
                             <tr>
                                 <th>Cover</th>
-                                <th data-sort="id">ID</th>
-                                <th data-sort="title">Title</th>
-                                <th data-sort="author">Author</th>
-                                <th data-sort="isbn">ISBN</th>
-                                <th data-sort="category">Category</th>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Category</th>
                                 <th>Available</th>
-                                <th data-sort="quantity">Quantity</th>
+                                <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -108,14 +108,12 @@
         </main>
     </div>
 
-    <footer id="main-footer" class="glass-footer" style="margin-top: auto;"></footer>
-
     <!-- Add/Edit Book Modal -->
     <div id="bookModal" class="modal">
         <div class="modal-content glass-card">
             <div class="modal-header">
                 <h2 id="modalTitle">Add New Book</h2>
-                <button onclick="Admin.closeModal()" class="modal-close">&times;</button>
+                <button onclick="Admin.books.closeModal()" class="modal-close">&times;</button>
             </div>
             <form id="bookForm">
                 <input type="hidden" id="bookId">
@@ -144,7 +142,7 @@
                     <input type="url" id="bookCover" placeholder="https://example.com/book-cover.jpg">
                 </div>
                 <div class="form-actions">
-                    <button type="button" onclick="Admin.closeModal()" class="btn-secondary">Cancel</button>
+                    <button type="button" onclick="Admin.books.closeModal()" class="btn-secondary">Cancel</button>
                     <button type="submit" class="btn-primary">Save Book</button>
                 </div>
             </form>
@@ -155,15 +153,12 @@
     <script src="../js/auth.js"></script>
     <script src="../js/ui.js"></script>
     <script src="../js/admin.js"></script>
-    <script src="../js/pages.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (!Auth.checkAuth('admin')) {
                 window.location.href = '../login.html';
                 return;
             }
-            UI.renderNav();
-            UI.renderFooter();
             Admin.books.init();
         });
     </script>

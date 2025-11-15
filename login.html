@@ -15,23 +15,20 @@
         <main class="auth-container">
             <div class="auth-card glass-card">
                 <div class="auth-header">
-                    <img src="assets/cbit-logo.jpg" alt="Library Logo" class="auth-logo" loading="lazy">
+                    <img src="assets/cbit-logo.jpg" alt="Library Logo" class="auth-logo">
                     <h1>Smart Library</h1>
                 </div>
 
-                <form id="loginForm" class="auth-form" role="form" aria-labelledby="login-heading">
+                <form id="loginForm" class="auth-form">
                     <div class="form-group">
-                        <label for="loginEmail">Email Address</label>
-                        <input type="email" id="loginEmail" required placeholder="Enter your email" aria-describedby="email-help" aria-required="true">
-                        <div id="email-help" class="sr-only">Enter your registered email address</div>
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" required placeholder="Enter your password" aria-describedby="password-help" aria-required="true">
-                        <div id="password-help" class="sr-only">Enter your account password</div>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
                     </div>
-                    <button type="submit" class="btn-primary btn-block" aria-describedby="login-help">Login</button>
-                    <div id="login-help" class="sr-only">Click to sign in to your account</div>
+                    <button type="submit" class="btn-primary btn-block">Login</button>
                 </form>
 
                 <div class="auth-links">
@@ -41,16 +38,19 @@
             </div>
         </main>
 
-        <footer id="main-footer" class="glass-footer"></footer>
+        <footer class="glass-footer">
+            <div class="footer-bottom">
+                <p>&copy; 2025 C. Byre Gowda Institute of Technology. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             UI.renderNav();
-            UI.renderFooter();
             Auth.initLogin();
         });
     </script>
