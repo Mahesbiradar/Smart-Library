@@ -321,6 +321,11 @@ const Admin = {
         },
 
         processCSVData(data) {
+            if (!data.length) {
+                App.showToast('No data to import', 'error');
+                return;
+            }
+            
             const books = App.getBooks();
             let added = 0;
             let errors = [];

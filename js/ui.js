@@ -16,7 +16,7 @@ const UI = {
             { label: 'About', href: 'about.html' },
             { label: 'Dashboard', href: 'user/dashboard.html' },
             { label: 'Profile', href: 'user/profile.html' },
-            { label: 'Logout', href: '#', action: 'logout' }
+            { label: 'Logout', href: 'index.html', action: 'logout' }
         ],
         admin: [
             { label: 'Home', href: 'index.html' },
@@ -26,7 +26,7 @@ const UI = {
             { label: 'Books Manager', href: 'admin/books.html' },
             { label: 'Transactions', href: 'admin/transactions.html' },
             { label: 'Issue/Return', href: 'admin/issue-return.html' },
-            { label: 'Logout', href: '#', action: 'logout' }
+            { label: 'Logout', href: 'index.html', action: 'logout' }
         ]
     },
 
@@ -115,10 +115,11 @@ const UI = {
     renderBookCard(book) {
         const available = book.quantity > 0;
         const user = Auth.getCurrentUser();
+        const coverUrl = book.coverUrl || 'assets/default-book-cover.jpg';
         
         return `
             <div class="book-card glass-card">
-                <img src="${book.coverUrl || 'assets/bg-library.jpg'}" alt="${book.title}" class="book-cover" loading="lazy">
+                <img src="${coverUrl}" alt="${book.title}" class="book-cover" loading="lazy">
                 <h3 class="book-title">${book.title}</h3>
                 <p class="book-author">by ${book.author}</p>
                 <p class="book-isbn">ISBN: ${book.isbn || 'N/A'}</p>

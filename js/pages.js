@@ -302,6 +302,11 @@ const Pages = {
                 return;
             }
 
+            if (!/^1DA\d{2}[A-Z]{2}\d{3}$/.test(usn)) {
+                App.showToast('Invalid USN format. Use format: 1DA23ET400', 'error');
+                return;
+            }
+
             if (phone.length !== 10 || !/^\d+$/.test(phone)) {
                 App.showToast('Please enter a valid 10-digit phone number', 'error');
                 return;

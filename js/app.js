@@ -283,6 +283,11 @@ const App = {
     },
 
     showToast(message, type = 'success') {
+        if (!message) {
+            console.error('Toast message cannot be empty');
+            return;
+        }
+        
         const toast = document.createElement('div');
         toast.className = `alert alert-${type} toast`;
         toast.textContent = message;

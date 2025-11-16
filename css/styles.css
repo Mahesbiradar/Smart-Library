@@ -90,6 +90,8 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    border: none;
+    border-radius: 10px;
 }
 
 .nav-brand img {
@@ -175,7 +177,7 @@ body {
 
 .search-box {
     display: flex;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 50px;
@@ -207,7 +209,6 @@ body {
 
 /* Departments */
 .departments h2 {
-    text-align: center;
     margin-bottom: 2rem;
     font-size: 2.5rem;
 }
@@ -215,7 +216,7 @@ body {
 .department-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .dept-card {
@@ -396,6 +397,8 @@ body {
 .auth-logo {
     height: 80px;
     margin-bottom: 1rem;
+    border-radius: 10px;
+    height: 120px;
 }
 
 .auth-form .form-group {
@@ -587,6 +590,9 @@ body {
 .btn-primary {
     background: var(--primary-color);
     color: white;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
 }
 
 .btn-primary:hover {
@@ -596,11 +602,17 @@ body {
 .btn-success {
     background: var(--success-color);
     color: white;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
 }
 
 .btn-warning {
     background: var(--warning-color);
     color: #333;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
 }
 
 .btn-danger {
@@ -611,6 +623,10 @@ body {
 .btn-secondary {
     background: #6c757d;
     color: white;
+    height: 20px;
+    width: 20px;
+    border: none;
+    border-radius: 10px;
 }
 
 .btn-block {

@@ -235,13 +235,10 @@ const Auth = {
         this.loadSession();
         
         if (!this.currentUser) {
-            if (window.location.pathname.includes('admin/') || 
-                window.location.pathname.includes('user/')) {
-                App.showToast('Please login to access this page', 'error');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1000);
-            }
+            App.showToast('Please login to access this page', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1000);
             return false;
         }
 
