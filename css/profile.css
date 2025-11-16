@@ -1,0 +1,143 @@
+/* profile.css
+   Standalone compact profile page styles for Smart-Library
+   Place in: d:\Smart-Library\css\profile.css
+   This file is intentionally small and only affects profile page classes.
+*/
+
+/* Theme vars (local scope) */
+:root{
+  --profile-gap: 18px;
+  --profile-card-radius: 14px;
+  --profile-glass: rgba(255,255,255,0.08);
+  --profile-border: rgba(255,255,255,0.12);
+  --accent: #4dafff;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --muted: rgba(255,255,255,0.68);
+  --card-padding: 12px;
+}
+
+/* Container that holds all three cards in a row */
+.profile-row {
+  display:flex;
+  gap: var(--profile-gap);
+  justify-content:center;
+  align-items:flex-start;
+  width:100%;
+  margin: 18px auto;
+  padding: 6px 12px;
+  box-sizing: border-box;
+}
+
+/* Generic card base used by the three cards */
+.profile-card,
+.update-card,
+.password-card {
+  background: var(--profile-glass);
+  border: 1px solid var(--profile-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--profile-card-radius);
+  padding: var(--card-padding);
+  width: 29%;
+  min-width: 220px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  box-sizing: border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Keep inner layout consistent */
+.profile-card .card-inner,
+.update-card .card-inner,
+.password-card .card-inner {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:stretch;
+}
+
+/* Profile image */
+.profile-img {
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin: 6px auto 8px;
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+}
+
+/* Name + USN centered */
+.profile-name { text-align:center; font-size:17px; font-weight:700; margin:4px 0 2px; }
+.profile-usn { text-align:center; font-size:13px; color:var(--muted); margin-bottom:8px; }
+
+/* card headings */
+.card-title { font-size:16px; font-weight:700; margin:0 0 6px; color:#fff; }
+
+/* compact form fields */
+.form-row { margin-bottom:8px; }
+label { display:block; font-size:12.5px; color:var(--muted); margin-bottom:6px; }
+input[type="text"], input[type="email"], input[type="password"], select {
+  width:100%;
+  padding:8px 10px;
+  height:36px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.02);
+  color:#fff;
+  font-size:13px;
+  box-sizing:border-box;
+}
+.input-compact { padding:7px 8px; height:36px; font-size:13px; }
+
+/* Buttons - full width inside card, compact */
+.card-actions { margin-top:6px; display:flex; gap:8px; }
+.btn {
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:600;
+  cursor:pointer;
+  border: none;
+  min-height:36px;
+  flex:1;
+}
+.btn-edit { background: rgba(77,175,255,0.95); color:#042; }
+.btn-update { background: var(--success); color:#042; }
+.btn-change { background: var(--warning); color:#042; }
+
+/* Disabled */
+.btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+/* Helper text */
+.helper { font-size:12px; color:var(--muted); margin-top:6px; }
+
+/* Ensure compact look: smaller fonts inside cards */
+.profile-card, .update-card, .password-card { font-size:14px; }
+
+/* Ensure equal visual height (flex) */
+.profile-card { align-items:center; }
+
+/* Responsive: stack under 1024px */
+@media (max-width: 1024px) {
+  .profile-row {
+    flex-direction:column;
+    gap:16px;
+    align-items:stretch;
+    padding: 10px;
+  }
+  .profile-card,
+  .update-card,
+  .password-card {
+    width:100%;
+    min-width:0;
+  }
+}
+
+/* Small screen fine-tune */
+@media (max-width: 480px) {
+  .profile-img { width:100px; height:100px; }
+  .card-title { font-size:15px; }
+  input[type="text"], input[type="email"], input[type="password"] { font-size:13px; }
+}

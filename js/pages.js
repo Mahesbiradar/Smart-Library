@@ -248,158 +248,124 @@ const Pages = {
     },
 
     // User Profile
-    userProfile: {
-        init: function() {
-            console.log("User Profile initialized.");
-            this.loadProfile();
-            this.setupForm();
-            this.setupEditButtons();
-        },
+    userProfile: () => {
+        const user = Auth.getCurrentUser();
+        if (!user) return;
 
-        loadProfile: function() {
-            const user = Auth.getCurrentUser();
-            if (!user) return;
+        // Get DOM elements
+        const profileNameDisplay = document.getElementById('profileNameDisplay');
+        const profileUSNDisplay = document.getElementById('profileUSNDisplay');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileUSN = document.getElementById('profileUSN');
+        const profilePhone = document.getElementById('profilePhone');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const updateProfileBtn = document.getElementById('updateProfileBtn');
+        const editPasswordBtn = document.getElementById('editPasswordBtn');
+        const currentPassword = document.getElementById('currentPassword');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
 
-            // Load profile form
-            const nameEl = document.getElementById('profileName');
-            const emailEl = document.getElementById('profileEmail');
-            const usnEl = document.getElementById('profileUSN');
-            const phoneEl = document.getElementById('profilePhone');
-            const profilePicEl = document.getElementById('profilePic');
+        // Load profile display
+        if (profileNameDisplay) profileNameDisplay.textContent = user.name;
+        if (profileUSNDisplay) profileUSNDisplay.textContent = user.usn;
 
-            if (nameEl) nameEl.value = user.name;
-            if (emailEl) emailEl.value = user.email;
-            if (usnEl) usnEl.value = user.usn;
-            if (phoneEl) phoneEl.value = user.phone;
-            if (profilePicEl) profilePicEl.src = '../assets/profile-icon.jpg';
-        },
+        // Load editable values
+        if (profileName) profileName.value = user.name;
+        if (profileEmail) profileEmail.value = user.email;
+        if (profileUSN) profileUSN.value = user.usn;
+        if (profilePhone) profilePhone.value = user.phone || "";
 
-        setupForm: function() {
-            const profileForm = document.getElementById('profileForm');
-            const passwordForm = document.getElementById('passwordForm');
-
-            if (profileForm) {
-                profileForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.updateProfile();
+        /* Edit Profile Button */
+        if (editProfileBtn) {
+            editProfileBtn.onclick = () => {
+                const inputs = document.querySelectorAll('#profileName, #profileEmail, #profilePhone');
+                inputs.forEach(input => {
+                    if (input.id !== 'profileEmail') { // Keep email read-only
+                        input.disabled = false;
+                    }
                 });
-            }
+                if (updateProfileBtn) updateProfileBtn.disabled = false;
+            };
+        }
 
-            if (passwordForm) {
-                passwordForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.changePassword();
-                });
-            }
-        },
+        /* Update Profile Button */
+        if (updateProfileBtn) {
+            updateProfileBtn.onclick = () => {
+                const updated = {
+                    ...user,
+                    name: profileName ? profileName.value : user.name,
+                    email: profileEmail ? profileEmail.value : user.email,
+                    usn: profileUSN ? profileUSN.value : user.usn,
+                    phone: profilePhone ? profilePhone.value : user.phone
+                };
 
-        setupEditButtons: function() {
-            const editProfileBtn = document.getElementById('editProfileBtn');
-            const editPasswordBtn = document.getElementById('editPasswordBtn');
-            const profileForm = document.getElementById('profileForm');
-            const passwordForm = document.getElementById('passwordForm');
-
-            if (editProfileBtn) {
-                editProfileBtn.addEventListener('click', () => {
-                    this.toggleProfileEdit();
-                });
-            }
-
-            if (editPasswordBtn) {
-                editPasswordBtn.addEventListener('click', () => {
-                    this.togglePasswordEdit();
-                });
-            }
-        },
-
-        toggleProfileEdit: function() {
-            const profileForm = document.getElementById('profileForm');
-            const editBtn = document.getElementById('editProfileBtn');
-            const inputs = profileForm.querySelectorAll('input:not([readonly])');
-            const submitBtn = profileForm.querySelector('button[type="submit"]');
-            
-            const isEditing = editBtn.textContent === 'Cancel Edit';
-            
-            if (isEditing) {
-                // Cancel editing - disable inputs
+                Auth.updateCurrentUser(updated);
+                if (App && App.showToast) {
+                    App.showToast("Profile updated successfully");
+                } else {
+                    alert("Profile updated successfully");
+                }
+                
+                // Update display
+                if (profileNameDisplay) profileNameDisplay.textContent = updated.name;
+                if (profileUSNDisplay) profileUSNDisplay.textContent = updated.usn;
+                
+                // Disable fields
+                const inputs = document.querySelectorAll('#profileName, #profileEmail, #profilePhone');
                 inputs.forEach(input => input.disabled = true);
-                submitBtn.disabled = true;
-                editBtn.textContent = 'Edit Profile';
-            } else {
-                // Start editing - enable inputs
+                if (updateProfileBtn) updateProfileBtn.disabled = true;
+            };
+        }
+
+        /* Edit Password Button */
+        if (editPasswordBtn) {
+            editPasswordBtn.onclick = () => {
+                const inputs = document.querySelectorAll('#currentPassword, #newPassword, #confirmPassword');
                 inputs.forEach(input => input.disabled = false);
-                submitBtn.disabled = false;
-                editBtn.textContent = 'Cancel Edit';
-            }
-        },
+                if (changePasswordBtn) changePasswordBtn.disabled = false;
+            };
+        }
 
-        togglePasswordEdit: function() {
-            const passwordForm = document.getElementById('passwordForm');
-            const editBtn = document.getElementById('editPasswordBtn');
-            const inputs = passwordForm.querySelectorAll('input');
-            const submitBtn = passwordForm.querySelector('button[type="submit"]');
-            
-            const isEditing = editBtn.textContent === 'Cancel Edit';
-            
-            if (isEditing) {
-                // Cancel editing - disable inputs and reset form
-                inputs.forEach(input => input.disabled = true);
-                submitBtn.disabled = true;
-                editBtn.textContent = 'Edit Password';
-                passwordForm.reset();
-            } else {
-                // Start editing - enable inputs
-                inputs.forEach(input => input.disabled = false);
-                submitBtn.disabled = false;
-                editBtn.textContent = 'Cancel Edit';
-            }
-        },
+        /* Change Password Button */
+        if (changePasswordBtn) {
+            changePasswordBtn.onclick = () => {
+                if (!currentPassword || currentPassword.value !== user.password) {
+                    if (App && App.showToast) {
+                        App.showToast("Incorrect current password", "error");
+                    } else {
+                        alert("Incorrect current password");
+                    }
+                    return;
+                }
 
-        updateProfile: function() {
-            const name = document.getElementById('profileName').value.trim();
-            const usn = document.getElementById('profileUSN').value.trim().toUpperCase();
-            const phone = document.getElementById('profilePhone').value.trim();
+                if (!newPassword || !confirmPassword || newPassword.value !== confirmPassword.value) {
+                    if (App && App.showToast) {
+                        App.showToast("Passwords do not match", "error");
+                    } else {
+                        alert("Passwords do not match");
+                    }
+                    return;
+                }
 
-            if (!name || !usn || !phone) {
-                App.showToast('Please fill all required fields', 'error');
-                return;
-            }
+                user.password = newPassword.value;
+                Auth.updateCurrentUser(user);
 
-            if (!/^1DA\d{2}[A-Z]{2}\d{3}$/.test(usn)) {
-                App.showToast('Invalid USN format. Use format: 1DA23ET400', 'error');
-                return;
-            }
+                if (App && App.showToast) {
+                    App.showToast("Password changed successfully");
+                } else {
+                    alert("Password changed successfully");
+                }
 
-            if (phone.length !== 10 || !/^\d+$/.test(phone)) {
-                App.showToast('Please enter a valid 10-digit phone number', 'error');
-                return;
-            }
-
-            try {
-                Auth.updateCurrentUser({
-                    name,
-                    usn,
-                    phone
+                // Clear and disable fields
+                const inputs = document.querySelectorAll('#currentPassword, #newPassword, #confirmPassword');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.value = "";
                 });
-
-                App.showToast('Profile updated successfully');
-            } catch (error) {
-                App.showToast('Error updating profile: ' + error.message, 'error');
-            }
-        },
-
-        changePassword: function() {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmNewPassword').value;
-
-            try {
-                Auth.changePassword(currentPassword, newPassword, confirmPassword);
-                document.getElementById('passwordForm').reset();
-                App.showToast('Password changed successfully');
-            } catch (error) {
-                App.showToast(error.message, 'error');
-            }
+                if (changePasswordBtn) changePasswordBtn.disabled = true;
+            };
         }
     },
 
@@ -427,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
             : (() => { if (Auth.checkAuth('admin')) Admin.dashboard.init(); }),
 
         "profile": () => {
-            if (Auth.checkAuth()) Pages.userProfile.init();
+            if (Auth.checkAuth()) Pages.userProfile();
         },
 
         "transactions": () => {

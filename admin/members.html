@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Management - Smart Library Admin</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div id="admin-app">
+        <header class="glass-header">
+            <nav id="main-nav">
+                <div class="nav-brand">
+                    <a href="dashboard.html">
+                        <img src="../assets/cbit-logo.jpg" alt="Smart Library">
+                        <span>Admin Panel</span>
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="books.html">Books Manager</a></li>
+                    <li><a href="transactions.html">Transactions</a></li>
+                    <li><a href="issue-return.html">Issue/Return</a></li>
+                    <li><a href="members.html" class="active">Members</a></li>
+                    <li><a href="#" onclick="Auth.logout()">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container">
+            <section class="page-header glass-card">
+                <h1>Members Management</h1>
+                <p class="text-muted">Manage registered library members, view their details, and handle member operations.</p>
+                <button onclick="Members.showAddMemberModal()" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add New Member
+                </button>
+            </section>
+
+            <section class="members-filters glass-card">
+                <h2>Filter Members</h2>
+                <div class="filter-controls">
+                    <input type="text" id="memberSearch" class="form-control" placeholder="Search by name, email, or USN...">
+                    <select id="memberRoleFilter" class="form-select">
+                        <option value="">All Roles</option>
+                        <option value="student">Student</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <select id="memberStatusFilter" class="form-select">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <button onclick="Members.clearFilters()" class="btn-secondary">Clear Filters</button>
+                </div>
+            </section>
+
+            <section class="members-table-section glass-card">
+                <div class="table-header">
+                    <h2>Members List</h2>
+                    <div class="table-actions">
+                        <button onclick="Members.exportMembers()" class="btn-success">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17,8 12,3 7,8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>USN</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Member Since</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">No members found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-pagination">
+                    <button id="prevPage" onclick="Members.prevPage()" class="btn-secondary">Previous</button>
+                    <span id="pageInfo" class="page-info">Page 1 of 1</span>
+                    <button id="nextPage" onclick="Members.nextPage()" class="btn-secondary">Next</button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="glass-footer">
+            <div class="footer-bottom">
+                <p>&copy; 2025 C. Byre Gowda Institute of Technology. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Member Modal -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h2 id="memberModalTitle">Add New Member</h2>
+                <button onclick="Members.closeModal()" class="modal-close">&times;</button>
+            </div>
+            <form id="memberForm" class="auth-form">
+                <input type="hidden" id="memberId" value="">
+                <div class="form-group">
+                    <label for="memberName">Full Name *</label>
+                    <input type="text" id="memberName" required placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail">Email Address *</label>
+                    <input type="email" id="memberEmail" required placeholder="Enter email address">
+                </div>
+                <div class="form-group">
+                    <label for="memberUSN">USN *</label>
+                    <input type="text" id="memberUSN" required placeholder="Enter USN">
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone">Phone Number</label>
+                    <input type="tel" id="memberPhone" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label for="memberRole">Role *</label>
+                    <select id="memberRole" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="memberPassword">Password *</label>
+                    <input type="password" id="memberPassword" placeholder="Enter password">
+                    <small class="text-muted">Leave blank to keep existing password when editing</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="Members.closeModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <span id="memberSubmitText">Add Member</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        // Members Management Module
+        const Members = {
+            currentPage: 1,
+            itemsPerPage: 10,
+            filteredMembers: [],
+            
+            init() {
+                if (!Auth.checkAuth('admin')) {
+                    window.location.href = '../login.html';
+                    return;
+                }
+                
+                this.loadMembers();
+                this.setupEventListeners();
+            },
+            
+            setupEventListeners() {
+                // Search and filter events
+                document.getElementById('memberSearch').addEventListener('input', () => this.applyFilters());
+                document.getElementById('memberRoleFilter').addEventListener('change', () => this.applyFilters());
+                document.getElementById('memberStatusFilter').addEventListener('change', () => this.applyFilters());
+                
+                // Form submission
+                document.getElementById('memberForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveMember();
+                });
+            },
+            
+            loadMembers() {
+                const members = App.getUsers();
+                this.filteredMembers = members.filter(user => user.role !== 'admin' || user.userId === Auth.getCurrentUser().userId);
+                this.currentPage = 1;
+                this.renderMembers();
+            },
+            
+            applyFilters() {
+                const searchTerm = document.getElementById('memberSearch').value.toLowerCase();
+                const roleFilter = document.getElementById('memberRoleFilter').value;
+                const statusFilter = document.getElementById('memberStatusFilter').value;
+                
+                let filtered = App.getUsers().filter(user => {
+                    const matchesSearch = !searchTerm || 
+                        user.name.toLowerCase().includes(searchTerm) ||
+                        user.email.toLowerCase().includes(searchTerm) ||
+                        user.usn.toLowerCase().includes(searchTerm);
+                    
+                    const matchesRole = !roleFilter || user.role === roleFilter;
+                    const matchesStatus = !statusFilter || this.getUserStatus(user) === statusFilter;
+                    
+                    return matchesSearch && matchesRole && matchesStatus;
+                });
+                
+                this.filteredMembers = filtered.filter(user => user.role !== 'admin' || user.userId === Auth.getCurrentUser().userId);
+                this.currentPage = 1;
+                this.renderMembers();
+            },
+            
+            getUserStatus(user) {
+                // Simple status logic - can be enhanced based on business rules
+                const lastLogin = user.lastLogin || user.createdAt;
+                const daysSinceLogin = (Date.now() - new Date(lastLogin)) / (1000 * 60 * 60 * 24);
+                return daysSinceLogin < 90 ? 'active' : 'inactive';
+            },
+            
+            renderMembers() {
+                const tbody = document.getElementById('membersTableBody');
+                const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+                const endIndex = startIndex + this.itemsPerPage;
+                const pageMembers = this.filteredMembers.slice(startIndex, endIndex);
+                
+                if (pageMembers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="no-data">No members found.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = pageMembers.map(member => `
+                    <tr>
+                        <td><strong>${member.usn}</strong></td>
+                        <td>${member.name}</td>
+                        <td>${member.email}</td>
+                        <td>${member.phone || 'N/A'}</td>
+                        <td><span class="status-badge status-${member.role}">${member.role.toUpperCase()}</span></td>
+                        <td><span class="status-badge status-${this.getUserStatus(member)}">${this.getUserStatus(member).toUpperCase()}</span></td>
+                        <td>${App.formatDate(member.createdAt)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button onclick="Members.viewMember('${member.userId}')" class="btn-sm btn-secondary" title="View Details">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button onclick="Members.editMember('${member.userId}')" class="btn-sm btn-primary" title="Edit Member">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </button>
+                                ${member.userId !== Auth.getCurrentUser().userId ? `
+                                    <button onclick="Members.deleteMember('${member.userId}')" class="btn-sm btn-danger" title="Delete Member">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3,6 5,6 21,6"></polyline>
+                                            <path d="M19,6V20a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8,6V4a2 2 0 0 1,2-2h4a2 2 0 0 1,2,2V6"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                this.updatePagination();
+            },
+            
+            updatePagination() {
+                const totalPages = Math.ceil(this.filteredMembers.length / this.itemsPerPage);
+                const pageInfo = document.getElementById('pageInfo');
+                const prevBtn = document.getElementById('prevPage');
+                const nextBtn = document.getElementById('nextPage');
+                
+                pageInfo.textContent = `Page ${this.currentPage} of ${totalPages}`;
+                prevBtn.disabled = this.currentPage === 1;
+                nextBtn.disabled = this.currentPage === totalPages;
+            },
+            
+            prevPage() {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.renderMembers();
+                }
+            },
+            
+            nextPage() {
+                const totalPages = Math.ceil(this.filteredMembers.length / this.itemsPerPage);
+                if (this.currentPage < totalPages) {
+                    this.currentPage++;
+                    this.renderMembers();
+                }
+            },
+            
+            showAddMemberModal() {
+                document.getElementById('memberModalTitle').textContent = 'Add New Member';
+                document.getElementById('memberSubmitText').textContent = 'Add Member';
+                document.getElementById('memberForm').reset();
+                document.getElementById('memberId').value = '';
+                document.getElementById('memberPassword').required = true;
+                document.getElementById('memberModal').style.display = 'flex';
+            },
+            
+            editMember(memberId) {
+                const member = App.getUsers().find(user => user.userId === memberId);
+                if (!member) {
+                    App.showToast('Member not found', 'error');
+                    return;
+                }
+                
+                document.getElementById('memberModalTitle').textContent = 'Edit Member';
+                document.getElementById('memberSubmitText').textContent = 'Update Member';
+                document.getElementById('memberId').value = member.userId;
+                document.getElementById('memberName').value = member.name;
+                document.getElementById('memberEmail').value = member.email;
+                document.getElementById('memberUSN').value = member.usn;
+                document.getElementById('memberPhone').value = member.phone || '';
+                document.getElementById('memberRole').value = member.role;
+                document.getElementById('memberPassword').required = false;
+                document.getElementById('memberModal').style.display = 'flex';
+            },
+            
+            viewMember(memberId) {
+                const member = App.getUsers().find(user => user.userId === memberId);
+                if (!member) {
+                    App.showToast('Member not found', 'error');
+                    return;
+                }
+                
+                alert(`Member Details:\n\nName: ${member.name}\nEmail: ${member.email}\nUSN: ${member.usn}\nPhone: ${member.phone || 'N/A'}\nRole: ${member.role}\nStatus: ${this.getUserStatus(member)}\nMember Since: ${App.formatDate(member.createdAt)}\nLast Login: ${App.formatDate(member.lastLogin)}`);
+            },
+            
+            deleteMember(memberId) {
+                const member = App.getUsers().find(user => user.userId === memberId);
+                if (!member) {
+                    App.showToast('Member not found', 'error');
+                    return;
+                }
+                
+                if (confirm(`Are you sure you want to delete member "${member.name}"? This action cannot be undone.`)) {
+                    const users = App.getUsers();
+                    const updatedUsers = users.filter(user => user.userId !== memberId);
+                    App.saveUsers(updatedUsers);
+                    
+                    App.showToast('Member deleted successfully');
+                    this.loadMembers();
+                }
+            },
+            
+            saveMember() {
+                const memberId = document.getElementById('memberId').value;
+                const name = document.getElementById('memberName').value;
+                const email = document.getElementById('memberEmail').value;
+                const usn = document.getElementById('memberUSN').value;
+                const phone = document.getElementById('memberPhone').value;
+                const role = document.getElementById('memberRole').value;
+                const password = document.getElementById('memberPassword').value;
+                
+                if (!name || !email || !usn || !role) {
+                    App.showToast('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Check for duplicate email or USN (excluding current member when editing)
+                const users = App.getUsers();
+                const duplicateEmail = users.find(user => user.email === email && user.userId !== memberId);
+                const duplicateUSN = users.find(user => user.usn === usn && user.userId !== memberId);
+                
+                if (duplicateEmail) {
+                    App.showToast('Email already exists', 'error');
+                    return;
+                }
+                
+                if (duplicateUSN) {
+                    App.showToast('USN already exists', 'error');
+                    return;
+                }
+                
+                if (memberId) {
+                    // Update existing member
+                    const memberIndex = users.findIndex(user => user.userId === memberId);
+                    if (memberIndex !== -1) {
+                        users[memberIndex] = {
+                            ...users[memberIndex],
+                            name,
+                            email,
+                            usn,
+                            phone,
+                            role,
+                            ...(password && { password })
+                        };
+                        App.saveUsers(users);
+                        App.showToast('Member updated successfully');
+                    }
+                } else {
+                    // Add new member
+                    const newMember = {
+                        userId: `USR${String(users.length + 1).padStart(3, '0')}`,
+                        name,
+                        email,
+                        usn,
+                        phone,
+                        password: password || 'default123',
+                        role,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    users.push(newMember);
+                    App.saveUsers(users);
+                    App.showToast('Member added successfully');
+                }
+                
+                this.closeModal();
+                this.loadMembers();
+            },
+            
+            closeModal() {
+                document.getElementById('memberModal').style.display = 'none';
+            },
+            
+            clearFilters() {
+                document.getElementById('memberSearch').value = '';
+                document.getElementById('memberRoleFilter').value = '';
+                document.getElementById('memberStatusFilter').value = '';
+                this.loadMembers();
+            },
+            
+            exportMembers() {
+                const members = this.filteredMembers.map(member => ({
+                    'USN': member.usn,
+                    'Name': member.name,
+                    'Email': member.email,
+                    'Phone': member.phone || '',
+                    'Role': member.role,
+                    'Status': this.getUserStatus(member),
+                    'Member Since': App.formatDate(member.createdAt)
+                }));
+                
+                App.exportToCSV(members, 'members');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Members.init();
+        });
+    </script>
+</body>
+</html>

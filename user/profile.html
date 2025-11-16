@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Smart Library</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
 <body>
     <div id="app">
@@ -13,57 +14,68 @@
         </header>
 
         <main class="container">
-            <h1 class="profile-page-title">My Profile</h1>
-            <div class="profile-wrapper">
-                <section class="profile-header glass-card">
-                    <div class="profile-avatar">
-                        <img src="../assets/cbit-logo.jpg" class="profile-photo" alt="Profile" id="profilePic">
-                    </div>
-                </section>
+            <h1 class="profile-title">My Profile</h1>
 
-                <section class="profile-form glass-card">
-                    <h2>Update Profile</h2>
-                    <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
-                    <form id="profileForm">
+            <div class="profile-container">
+                <div class="profile-row">
+                    <!-- Profile Header Card -->
+                    <div class="glass-card profile-header-card profile-card">
+                        <img src="../assets/profile-icon.jpg" class="profile-image profile-img" alt="Profile">
+                        <h2 id="profileNameDisplay"></h2>
+                        <p id="profileUSNDisplay"></p>
+                    </div>
+
+                    <!-- Update Profile Card -->
+                    <div class="glass-card profile-form-card update-card">
+                        <h3 class="card-title">Update Profile</h3>
+                        <button id="editProfileBtn" class="btn btn-edit-profile">Edit Profile</button>
+                        
                         <div class="form-group">
                             <label for="profileName">Full Name</label>
-                            <input type="text" id="profileName" required disabled>
+                            <input type="text" id="profileName" disabled>
                         </div>
+                        
                         <div class="form-group">
                             <label for="profileEmail">Email</label>
-                            <input type="email" id="profileEmail" required readonly disabled>
+                            <input type="email" id="profileEmail" disabled readonly>
                         </div>
+                        
                         <div class="form-group">
                             <label for="profileUSN">USN</label>
-                            <input type="text" id="profileUSN" required disabled>
+                            <input type="text" id="profileUSN" disabled readonly>
                         </div>
+                        
                         <div class="form-group">
                             <label for="profilePhone">Phone Number</label>
-                            <input type="tel" id="profilePhone" required disabled>
+                            <input type="text" id="profilePhone" disabled>
                         </div>
-                        <button type="submit" class="btn-success btn-block" disabled>Update Profile</button>
-                    </form>
-                </section>
+                        
+                        <button id="updateProfileBtn" class="btn btn-update-profile" disabled>Update Profile</button>
+                    </div>
 
-                <section class="password-change glass-card">
-                    <h2>Change Password</h2>
-                    <button id="editPasswordBtn" class="btn-edit">Edit Password</button>
-                    <form id="passwordForm">
+                    <!-- Change Password Card -->
+                    <div class="glass-card profile-form-card password-card">
+                        <h3 class="card-title">Change Password</h3>
+                        <button id="editPasswordBtn" class="btn btn-edit-password">Edit Password</button>
+                        
                         <div class="form-group">
                             <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword" required disabled>
+                            <input type="password" id="currentPassword" disabled>
                         </div>
+                        
                         <div class="form-group">
                             <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" required disabled>
+                            <input type="password" id="newPassword" disabled>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="confirmNewPassword">Confirm New Password</label>
-                            <input type="password" id="confirmNewPassword" required disabled>
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" disabled>
                         </div>
-                        <button type="submit" class="btn-warning btn-block" disabled>Change Password</button>
-                    </form>
-                </section>
+                        
+                        <button id="changePasswordBtn" class="btn btn-change-password" disabled>Change Password</button>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -85,7 +97,7 @@
                 return;
             }
             UI.renderNav();
-            Pages.userProfile.init();
+            Pages.userProfile();
         });
     </script>
 </body>
