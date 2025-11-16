@@ -17,19 +17,34 @@ const Admin = {
             const users = App.getUsers();
 
             // Total books
-            document.getElementById('totalBooks').textContent = books.length;
+            const totalBooksEl = document.getElementById('totalBooks');
+            if (totalBooksEl) totalBooksEl.textContent = books.length;
 
             // Currently issued books
             const issuedCount = transactions.filter(t => t.status === 'issued').length;
-            document.getElementById('issuedBooks').textContent = issuedCount;
+            const issuedBooksEl = document.getElementById('issuedBooks');
+            if (issuedBooksEl) issuedBooksEl.textContent = issuedCount;
 
             // Registered users (excluding admin)
             const registeredUsers = users.filter(u => u.role === 'student').length;
-            document.getElementById('registeredUsers').textContent = registeredUsers;
+            const registeredUsersEl = document.getElementById('registeredUsers');
+            if (registeredUsersEl) registeredUsersEl.textContent = registeredUsers;
 
             // Overdue books
             const overdueCount = this.calculateOverdueBooks();
-            document.getElementById('overdueBooks').textContent = overdueCount;
+            const overdueBooksEl = document.getElementById('overdueBooks');
+            if (overdueBooksEl) overdueBooksEl.textContent = overdueCount;
+
+            // Available Copies = sum of all book quantities - sum of all issued books
+            const totalQuantity = books.reduce((sum, book) => sum + book.quantity, 0);
+            const availableCopies = totalQuantity - issuedCount;
+            const availableCopiesEl = document.getElementById('availableCopies');
+            if (availableCopiesEl) availableCopiesEl.textContent = availableCopies;
+
+            // Total Categories
+            const categories = [...new Set(books.map(book => book.category))];
+            const totalCategoriesEl = document.getElementById('totalCategories');
+            if (totalCategoriesEl) totalCategoriesEl.textContent = categories.length;
         },
 
         calculateOverdueBooks() {
@@ -436,11 +451,20 @@ const Admin = {
                 </td>
                 <td>${fine} ₹</td>
                 <td>
-                    ${transaction.status === 'issued' ? 
-                        `<button onclick="Admin.transactions.forceReturn('${transaction.id}')" 
-                                class="btn-sm btn-warning">Force Return</button>` : 
-                        '<span class="text-muted">-</span>'
-                    }
+                    <div class="action-buttons">
+                        ${transaction.status === 'issued' ?
+                            `<button onclick="Admin.transactions.forceReturn('${transaction.id}')"
+                                    class="btn-sm btn-warning" title="Force Return">Force Return</button>` :
+                            '<span class="text-muted">-</span>'
+                        }
+                        <button onclick="Admin.transactions.deleteTransaction('${transaction.id}')"
+                                class="btn-sm btn-danger" title="Delete Transaction">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </td>
             `;
 
@@ -498,9 +522,32 @@ const Admin = {
             try {
                 App.returnBook(transactionId);
                 App.showToast('Book returned successfully');
+                if (document.getElementById('totalBooks')) {
+                    Admin.dashboard.updateStats();
+                }
                 this.loadTransactions();
             } catch (error) {
                 App.showToast(error.message, 'error');
+            }
+        },
+
+        deleteTransaction(transactionId) {
+            if (!confirm('Are you sure you want to delete this transaction? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const transactions = App.getTransactions();
+                const updated = transactions.filter(t => t.id !== transactionId);
+                App.saveTransactions(updated);
+                App.showToast('Transaction deleted successfully');
+                if (document.getElementById('totalBooks')) {
+                    Admin.dashboard.updateStats();
+                }
+                this.loadTransactions();
+
+            } catch (error) {
+                App.showToast('Failed to delete transaction: ' + error.message, 'error');
             }
         },
 
@@ -689,6 +736,9 @@ const Admin = {
             try {
                 App.issueBook(this.selectedBook.id, this.selectedStudent.userId);
                 App.showToast('Book issued successfully');
+                if (document.getElementById('totalBooks')) {
+                    Admin.dashboard.updateStats();
+                }
                 this.resetForm();
                 this.loadTransactions();
             } catch (error) {
@@ -718,6 +768,9 @@ const Admin = {
             try {
                 App.returnBook(transaction.id);
                 App.showToast('Book returned successfully');
+                if (document.getElementById('totalBooks')) {
+                    Admin.dashboard.updateStats();
+                }
                 this.resetForm();
                 this.loadTransactions();
             } catch (error) {
@@ -737,7 +790,7 @@ const Admin = {
 
         loadTransactions() {
             // Refresh the transactions count on dashboard if on that page
-            if (typeof Admin.dashboard !== 'undefined') {
+            if (typeof Admin.dashboard !== 'undefined' && document.getElementById('totalBooks')) {
                 Admin.dashboard.updateStats();
             }
         }

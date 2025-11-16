@@ -13,54 +13,58 @@
         </header>
 
         <main class="container">
-            <section class="profile-header glass-card">
-                <h1>My Profile</h1>
-                <div class="profile-avatar">
-                    <img src="../assets/cbit-logo.jpg" alt="Profile" id="profilePic">
-                </div>
-            </section>
+            <h1 class="profile-page-title">My Profile</h1>
+            <div class="profile-wrapper">
+                <section class="profile-header glass-card">
+                    <div class="profile-avatar">
+                        <img src="../assets/cbit-logo.jpg" class="profile-photo" alt="Profile" id="profilePic">
+                    </div>
+                </section>
 
-            <section class="profile-form glass-card">
-                <h2>Update Profile</h2>
-                <form id="profileForm">
-                    <div class="form-group">
-                        <label for="profileName">Full Name</label>
-                        <input type="text" id="profileName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="profileEmail">Email</label>
-                        <input type="email" id="profileEmail" required readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="profileUSN">USN</label>
-                        <input type="text" id="profileUSN" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="profilePhone">Phone Number</label>
-                        <input type="tel" id="profilePhone" required>
-                    </div>
-                    <button type="submit" class="btn-success btn-block">Update Profile</button>
-                </form>
-            </section>
+                <section class="profile-form glass-card">
+                    <h2>Update Profile</h2>
+                    <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="profileName">Full Name</label>
+                            <input type="text" id="profileName" required disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileEmail">Email</label>
+                            <input type="email" id="profileEmail" required readonly disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileUSN">USN</label>
+                            <input type="text" id="profileUSN" required disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="profilePhone">Phone Number</label>
+                            <input type="tel" id="profilePhone" required disabled>
+                        </div>
+                        <button type="submit" class="btn-success btn-block" disabled>Update Profile</button>
+                    </form>
+                </section>
 
-            <section class="password-change glass-card">
-                <h2>Change Password</h2>
-                <form id="passwordForm">
-                    <div class="form-group">
-                        <label for="currentPassword">Current Password</label>
-                        <input type="password" id="currentPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <input type="password" id="newPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmNewPassword">Confirm New Password</label>
-                        <input type="password" id="confirmNewPassword" required>
-                    </div>
-                    <button type="submit" class="btn-warning btn-block">Change Password</button>
-                </form>
-            </section>
+                <section class="password-change glass-card">
+                    <h2>Change Password</h2>
+                    <button id="editPasswordBtn" class="btn-edit">Edit Password</button>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" required disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" required disabled>
+                        </div>
+                        <button type="submit" class="btn-warning btn-block" disabled>Change Password</button>
+                    </form>
+                </section>
+            </div>
         </main>
 
         <footer class="glass-footer">

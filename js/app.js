@@ -183,7 +183,11 @@ const App = {
         const books = this.getBooks();
         const book = books.find(b => b.id === bookId);
         
-        if (!book || book.quantity <= 0) {
+        if (!book) {
+            throw new Error('Book not found');
+        }
+
+        if (book.quantity <= 0) {
             throw new Error('Book is not available');
         }
 
@@ -193,14 +197,23 @@ const App = {
         }
 
         // Check if user already has this book issued
-        const existingTransaction = this.getTransactions().find(t => 
-            t.bookId === bookId && 
-            t.userId === userId && 
+        const existingTransaction = this.getTransactions().find(t =>
+            t.bookId === bookId &&
+            t.userId === userId &&
             t.status === 'issued'
         );
         
         if (existingTransaction) {
             throw new Error('User already has this book issued');
+        }
+
+        // Prevent double issue of same book to same user
+        const transactions = this.getTransactions();
+        const existing = transactions.find(
+            t => t.bookId === bookId && t.userId === userId && t.status === "issued"
+        );
+        if (existing) {
+            throw new Error("This book is already issued to this user");
         }
 
         // Create transaction
@@ -217,13 +230,12 @@ const App = {
             status: 'issued'
         };
 
-        // Update book quantity
-        book.quantity -= 1;
+        // Update book quantity exactly once
+        book.quantity = Math.max(0, book.quantity - 1);
         book.available = book.quantity > 0;
 
         // Save changes
         this.saveBooks(books);
-        const transactions = this.getTransactions();
         transactions.push(transaction);
         this.saveTransactions(transactions);
 

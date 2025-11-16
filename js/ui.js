@@ -11,22 +11,22 @@ const UI = {
             { label: 'Login', href: 'login.html' }
         ],
         student: [
-            { label: 'Home', href: 'index.html' },
-            { label: 'Books', href: 'books.html' },
-            { label: 'About', href: 'about.html' },
-            { label: 'Dashboard', href: 'user/dashboard.html' },
-            { label: 'Profile', href: 'user/profile.html' },
-            { label: 'Logout', href: 'index.html', action: 'logout' }
+            { label: 'Home', href: '../index.html' },
+            { label: 'Books', href: '../books.html' },
+            { label: 'About', href: '../about.html' },
+            { label: 'Dashboard', href: '/user/dashboard.html' },
+            { label: 'Profile', href: '/user/profile.html' },
+            { label: 'Logout', href: '../index.html', action: 'logout' }
         ],
         admin: [
-            { label: 'Home', href: 'index.html' },
-            { label: 'Books', href: 'books.html' },
-            { label: 'About', href: 'about.html' },
-            { label: 'Admin Dashboard', href: 'admin/dashboard.html' },
-            { label: 'Books Manager', href: 'admin/books.html' },
-            { label: 'Transactions', href: 'admin/transactions.html' },
-            { label: 'Issue/Return', href: 'admin/issue-return.html' },
-            { label: 'Logout', href: 'index.html', action: 'logout' }
+            { label: 'Home', href: '../index.html' },
+            { label: 'Books', href: '../books.html' },
+            { label: 'About', href: '../about.html' },
+            { label: 'Admin Dashboard', href: 'dashboard.html' },
+            { label: 'Books Manager', href: 'books.html' },
+            { label: 'Transactions', href: 'transactions.html' },
+            { label: 'Issue/Return', href: 'issue-return.html' },
+            { label: 'Logout', href: '../index.html', action: 'logout' }
         ]
     },
 
@@ -40,15 +40,22 @@ const UI = {
         const links = this.navConfig[role];
 
         let logoHref = 'index.html';
-        if (role === 'admin') logoHref = 'admin/dashboard.html';
-        if (role === 'student') logoHref = 'user/dashboard.html';
+        if (role === 'admin') logoHref = 'dashboard.html';
+        if (role === 'student') logoHref = 'dashboard.html';
 
+        let logoSrc = 'assets/cbit-logo.jpg';
+        if (role === 'student') {
+            logoSrc = '../assets/cbit-logo.jpg';
+        }
+        
         nav.innerHTML = `
             <div class="nav-brand">
                 <a href="${logoHref}">
-                    <img src="assets/cbit-logo.jpg" alt="Smart Library">
-                    <span>Smart Library</span>
+                    <img src="${logoSrc}" alt="Smart Library">
                 </a>
+            </div>
+            <div class="nav-title">
+                <h1>Smart Library</h1>
             </div>
             <ul class="nav-links">
                 ${links.map(link => {
@@ -86,7 +93,7 @@ const UI = {
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="books.html">Browse Books</a></li>
-                        <li><a href="https://drait.edu.in/">College Website</a></li>
+                        <li><a href="https://cbitkolar.edu.in/">College Website</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -157,7 +164,7 @@ const UI = {
         try {
             App.issueBook(bookId, user.userId);
             App.showToast('Book requested successfully!');
-            // Refresh the page to update availability
+            // Refresh the page to update availability after a delay
             setTimeout(() => window.location.reload(), 1000);
         } catch (error) {
             App.showToast(error.message, 'error');

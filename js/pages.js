@@ -253,6 +253,7 @@ const Pages = {
             console.log("User Profile initialized.");
             this.loadProfile();
             this.setupForm();
+            this.setupEditButtons();
         },
 
         loadProfile: function() {
@@ -270,7 +271,7 @@ const Pages = {
             if (emailEl) emailEl.value = user.email;
             if (usnEl) usnEl.value = user.usn;
             if (phoneEl) phoneEl.value = user.phone;
-            if (profilePicEl) profilePicEl.src = 'assets/avatar-default.jpg';
+            if (profilePicEl) profilePicEl.src = '../assets/profile-icon.jpg';
         },
 
         setupForm: function() {
@@ -289,6 +290,68 @@ const Pages = {
                     e.preventDefault();
                     this.changePassword();
                 });
+            }
+        },
+
+        setupEditButtons: function() {
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const editPasswordBtn = document.getElementById('editPasswordBtn');
+            const profileForm = document.getElementById('profileForm');
+            const passwordForm = document.getElementById('passwordForm');
+
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', () => {
+                    this.toggleProfileEdit();
+                });
+            }
+
+            if (editPasswordBtn) {
+                editPasswordBtn.addEventListener('click', () => {
+                    this.togglePasswordEdit();
+                });
+            }
+        },
+
+        toggleProfileEdit: function() {
+            const profileForm = document.getElementById('profileForm');
+            const editBtn = document.getElementById('editProfileBtn');
+            const inputs = profileForm.querySelectorAll('input:not([readonly])');
+            const submitBtn = profileForm.querySelector('button[type="submit"]');
+            
+            const isEditing = editBtn.textContent === 'Cancel Edit';
+            
+            if (isEditing) {
+                // Cancel editing - disable inputs
+                inputs.forEach(input => input.disabled = true);
+                submitBtn.disabled = true;
+                editBtn.textContent = 'Edit Profile';
+            } else {
+                // Start editing - enable inputs
+                inputs.forEach(input => input.disabled = false);
+                submitBtn.disabled = false;
+                editBtn.textContent = 'Cancel Edit';
+            }
+        },
+
+        togglePasswordEdit: function() {
+            const passwordForm = document.getElementById('passwordForm');
+            const editBtn = document.getElementById('editPasswordBtn');
+            const inputs = passwordForm.querySelectorAll('input');
+            const submitBtn = passwordForm.querySelector('button[type="submit"]');
+            
+            const isEditing = editBtn.textContent === 'Cancel Edit';
+            
+            if (isEditing) {
+                // Cancel editing - disable inputs and reset form
+                inputs.forEach(input => input.disabled = true);
+                submitBtn.disabled = true;
+                editBtn.textContent = 'Edit Password';
+                passwordForm.reset();
+            } else {
+                // Start editing - enable inputs
+                inputs.forEach(input => input.disabled = false);
+                submitBtn.disabled = false;
+                editBtn.textContent = 'Cancel Edit';
             }
         },
 
@@ -353,20 +416,30 @@ const Pages = {
 document.addEventListener('DOMContentLoaded', () => {
     const page = window.location.pathname.split('/').pop().split('.')[0] || 'index';
     
-    // Map page names to their respective handlers
-    const pageHandlers = {
-        'index': () => Pages.home.init(),
-        'books': () => Pages.books.init(),
-        'about': () => Pages.about.init(),
-        'user/dashboard': () => {
-            if (Auth.checkAuth()) Pages.userDashboard.init();
-        },
-        'user/profile': () => {
+    // Map page names to their respective handlers with routing logic
+    const routes = {
+        "index": () => Pages.home.init(),
+        "about": () => Pages.about.init(),
+        "books": () => Pages.books.init(),
+
+        "dashboard": window.location.pathname.includes('/user/')
+            ? (() => { if (Auth.checkAuth()) Pages.userDashboard.init(); })
+            : (() => { if (Auth.checkAuth('admin')) Admin.dashboard.init(); }),
+
+        "profile": () => {
             if (Auth.checkAuth()) Pages.userProfile.init();
+        },
+
+        "transactions": () => {
+            if (Auth.checkAuth('admin')) Admin.transactions.init();
+        },
+
+        "issue-return": () => {
+            if (Auth.checkAuth('admin')) Admin.issueReturn.init();
         }
     };
 
-    const handler = pageHandlers[page];
+    const handler = routes[page];
     if (handler) {
         handler();
     } else {

@@ -225,7 +225,15 @@ const Auth = {
             this.clearSession();
             App.showToast('Logged out successfully');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                // Determine the correct redirect path based on current location
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('/admin/')) {
+                    window.location.href = '../index.html';
+                } else if (currentPath.includes('/user/')) {
+                    window.location.href = '../index.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
             }, 500);
         }
     },
